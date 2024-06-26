@@ -7,10 +7,10 @@ const login = async (req, res, next) => {
   const realLogin = process.env.USER_LOGIN;
   const realPassword = process.env.USER_PASSWORD;
 
-  if (
-    login.toLowerCase() !== realLogin &&
-    password.toLowerCase() !== realPassword
-  ) {
+  const formattedLogin = login.toLowerCase().trim();
+  const formattedPassword = password.toLowerCase().trim();
+
+  if (formattedLogin !== realLogin && formattedPassword !== realPassword) {
     throw HttpError(401, 'Email or password is wrong');
   }
 
