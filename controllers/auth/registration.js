@@ -20,19 +20,11 @@ const registration = async (req, res) => {
     password: hashPassword,
   });
 
-  const token = await generateToken({
-    userName: result.userName,
-    id: result._id,
-  });
-
-  await saveToken(result._id, token);
-
   res.status(201).json({
     user: {
       email: result.email,
       id: result._id,
     },
-    token,
   });
 };
 
