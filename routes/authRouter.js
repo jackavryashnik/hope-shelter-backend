@@ -1,8 +1,12 @@
 import express from 'express';
-import authCtrl from '../controllers/authCtrl.js';
 
-const authRouter = express.Router();
+import ctrlWrapper from '../helpers/ctrlWrapper.js';
+import registration from '../controllers/auth/registration.js';
+import login from '../controllers/auth/login.js';
 
-authRouter.post('/login', authCtrl.login);
+const router = express.Router();
 
-export default authRouter;
+router.post('/login', ctrlWrapper(login));
+router.post('/register', ctrlWrapper(registration));
+
+export default router;
