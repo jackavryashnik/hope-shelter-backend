@@ -1,7 +1,6 @@
 import bcryptjs from 'bcryptjs';
 
 import { UserModel } from '../../schemas/userModel.js';
-import { generateToken, saveToken } from '../../services/tokenService.js';
 import HttpError from '../../helpers/HttpError.js';
 
 const registration = async (req, res) => {
