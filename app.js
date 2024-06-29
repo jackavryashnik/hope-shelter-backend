@@ -2,8 +2,8 @@ import express from 'express';
 import cors from 'cors';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
+import cookieParser from 'cookie-parser';
 
-import HttpError from './helpers/httpError.js';
 import bedsRouter from './routes/bedsRouter.js';
 import authRouter from './routes/authRouter.js';
 
@@ -17,6 +17,7 @@ const io = new Server(server, {
 
 app.use(cors());
 app.use(express.json());
+app.use(cookieParser());
 
 app.use((req, res, next) => {
   req.io = io;
@@ -30,11 +31,9 @@ app.use((req, res, next) => {
   next(HttpError(404, 'Route not found'));
 });
 
-app.use((err, req, res, next) => {
-  res.status(err.statusCode).json({
-    status: err.status,
-    message: err.message,
-  });
+app.use(async (err, req, res, next) => {
+  const { status = 500, message = 'Server error' } = err;
+  res.status(status).json({ message });
 });
 
 export { app, server };

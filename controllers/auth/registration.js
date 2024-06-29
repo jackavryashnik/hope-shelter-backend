@@ -1,7 +1,7 @@
 import bcryptjs from 'bcryptjs';
 
 import { UserModel } from '../../schemas/userModel.js';
-import { generateToken, saveToken } from '../../services/tokenService.js';
+
 import HttpError from '../../helpers/HttpError.js';
 
 const registration = async (req, res) => {
@@ -9,7 +9,6 @@ const registration = async (req, res) => {
   const user = await UserModel.findOne({ email });
 
   const hashPassword = await bcryptjs.hash(password, 10);
-
   if (user) {
     throw HttpError(409, 'Email already exist');
   }
