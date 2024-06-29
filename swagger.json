@@ -1,0 +1,283 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "version": "1.0.1",
+    "title": "Shelter API documentation",
+    "description": "API for managing shelter statistics and user authentication",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "servers": [
+    { "url": "https://hope-shelter-api.onrender.com/api" },
+    { "url": "http://localhost:8000/api" }
+  ],
+
+  "tags": [
+    {
+      "name": "Auth",
+      "description": "Authorization and user endpoints"
+    },
+    {
+      "name": "Stats",
+      "description": "Get shelter stats endpoint"
+    },
+    {
+      "name": "Beds",
+      "description": "Update shelter stats endpoint"
+    }
+  ],
+
+  "paths": {
+    "/auth/register": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "User registration",
+        "description": "Register a new user",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Registration details",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Registration"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "User registered",
+            "schema": {
+              "$ref": "#/components/schemas/UserResponse"
+            }
+          },
+          "409": {
+            "description": "Conflict - Email already exists"
+          }
+        }
+      }
+    },
+
+    "/auth/login": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "User login",
+        "description": "Authenticate a user and return a token",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Login details",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Login"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful login",
+            "schema": {
+              "$ref": "#/components/schemas/UserResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+
+    "/auth/logout": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "User logout",
+        "description": "Log out the current user",
+        "responses": {
+          "200": {
+            "description": "Successful logout",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stats": {
+      "get": {
+        "tags": ["Stats"],
+        "summary": "Get statistics",
+        "description": "Retrieve shelter statistics",
+        "responses": {
+          "200": {
+            "description": "Statistics retrieved",
+            "schema": {
+              "$ref": "#/components/schemas/Shelter"
+            }
+          }
+        }
+      }
+    },
+    "/beds": {
+      "patch": {
+        "tags": ["Beds"],
+        "summary": "Update beds information",
+        "description": "Update the number of beds taken in a specific room",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Beds update details",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/UpdateBeds"
+            }
+          }
+        ],
+        "security": [{ "Access Token": [] }],
+        "responses": {
+          "200": {
+            "description": "Beds updated successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Room not found"
+          }
+        }
+      }
+    }
+  },
+
+  "components": {
+    "schemas": {
+      "Login": {
+        "type": "object",
+        "required": ["email", "password"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "password": {
+            "type": "string",
+            "format": "password"
+          }
+        }
+      },
+      "Registration": {
+        "type": "object",
+        "required": ["userName", "email", "password"],
+        "properties": {
+          "userName": {
+            "type": "string",
+            "minLength": 3
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "password": {
+            "type": "string",
+            "minLength": 6
+          }
+        }
+      },
+      "UserResponse": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "$ref": "#/components/schemas/User"
+          },
+          "token": {
+            "type": "string"
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          }
+        }
+      },
+      "Shelter": {
+        "type": "object",
+        "properties": {
+          "totalGuests": {
+            "type": "number"
+          },
+          "currentGuests": {
+            "type": "number"
+          },
+          "rooms": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/Room"
+            }
+          }
+        }
+      },
+      "Room": {
+        "type": "object",
+        "properties": {
+          "number": {
+            "type": "number"
+          },
+          "totalBeds": {
+            "type": "number"
+          },
+          "bedsTaken": {
+            "type": "number"
+          }
+        }
+      },
+      "UpdateBeds": {
+        "type": "object",
+        "required": ["room", "bedsTaken"],
+        "properties": {
+          "room": {
+            "type": "string"
+          },
+          "bedsTaken": {
+            "type": "number"
+          }
+        }
+      }
+    }
+  },
+  "securitySchemes": {
+    "Access Token": {
+      "type": "http",
+      "scheme": "bearer",
+      "bearerFormat": "JWT"
+    }
+  }
+}
