@@ -3,7 +3,7 @@ import handleSchemaValidationErrors from '../helpers/handleSchemaValidationError
 
 const TokenSchema = new Schema({
   user: { type: Schema.Types.ObjectId, ref: 'UserModel' },
-  refreshToken: { type: String, require: true },
+  token: { type: String, require: true },
 });
 
 TokenSchema.post('save', handleSchemaValidationErrors);

@@ -8,7 +8,6 @@ const registration = async (req, res) => {
   const user = await UserModel.findOne({ email });
 
   const hashPassword = await bcryptjs.hash(password, 10);
-
   if (user) {
     throw HttpError(409, 'Email already exist');
   }

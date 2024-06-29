@@ -5,6 +5,7 @@ const ctrlWrapper = ctrl => {
     try {
       await ctrl(req, res, next);
     } catch (error) {
+      console.log('ctrlWrapper', error);
       next(errorWrapper(error));
     }
   };

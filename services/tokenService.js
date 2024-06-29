@@ -12,11 +12,11 @@ export const generateToken = async payload => {
 };
 
 export const saveToken = async (userId, token) => {
-  const newToken = TokenModel.create({ user: userId, token });
+  const newToken = TokenModel.create({ user: userId, token: token });
   return newToken;
 };
 
-export const removeToken = async refreshToken => {
-  const tokenData = await Tokens.deleteOne({ refreshToken });
+export const removeToken = async token => {
+  const tokenData = await TokenModel.deleteOne({ token });
   return tokenData;
 };
