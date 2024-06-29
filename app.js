@@ -4,7 +4,7 @@ import { createServer } from 'http';
 import { Server } from 'socket.io';
 import cookieParser from 'cookie-parser';
 
-import bedsRouter from './routes/bedsRouter.js';
+import statsRouter from './routes/statsRouter.js';
 import authRouter from './routes/authRouter.js';
 
 const app = express();
@@ -25,7 +25,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/api/auth', authRouter);
-app.use('/api', bedsRouter(io));
+app.use('/api', statsRouter(io));
 
 app.use((req, res, next) => {
   next(HttpError(404, 'Route not found'));
