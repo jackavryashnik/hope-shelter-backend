@@ -20,7 +20,20 @@ const io = new Server(server, {
   },
 });
 
-app.use(cors());
+app.use(
+  cors({
+    credentials: true,
+    headers: ['Content-Type'],
+    allowedHeaders: [
+      'Authorization',
+      'Content-Type',
+      'Access-Control-Allow-Origin',
+    ],
+    origin: true,
+    Headers: true,
+    methods: ['GET', 'PUT', 'POST', 'DELETE', 'OPTIONS'],
+  })
+);
 app.use(express.json());
 app.use(cookieParser());
 

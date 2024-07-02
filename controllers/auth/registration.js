@@ -4,7 +4,7 @@ import { UserModel } from '../../schemas/userModel.js';
 import HttpError from '../../helpers/HttpError.js';
 
 const registration = async (req, res) => {
-  const { email, password, userName } = req.body;
+  const { email, password, username } = req.body;
   const user = await UserModel.findOne({ email });
 
   const hashPassword = await bcryptjs.hash(password, 10);
@@ -13,7 +13,7 @@ const registration = async (req, res) => {
   }
 
   const result = await UserModel.create({
-    userName,
+    username,
     email,
     password: hashPassword,
   });
