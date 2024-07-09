@@ -11,7 +11,7 @@ const handleSocketConnection = async socket => {
         { _id: '668cec5b34ae8c18b72893fd', 'rooms._id': roomId },
         { $set: { 'rooms.$.bedsTaken': bedsTaken } }
       );
-      console.log(result);
+
       if (result.modifiedCount > 0) {
         const updatedStats = await Shelter.findOne();
         socket.broadcast.emit('bedsFetched', updatedStats);
