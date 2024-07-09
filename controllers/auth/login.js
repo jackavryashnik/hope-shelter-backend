@@ -19,7 +19,7 @@ const login = async (req, res) => {
   }
 
   const token = await generateToken({
-    userName: user.userName,
+    username: user.username,
     id: user._id,
   });
 

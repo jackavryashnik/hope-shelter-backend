@@ -1,18 +1,19 @@
-import { Schema, model } from 'mongoose';
+import mongoose, { Schema, model } from 'mongoose';
 
 const roomSchema = new Schema(
   {
-    number: {
-      type: Number,
-      require: true,
+    roomNumber: {
+      type: String,
     },
     totalBeds: {
       type: Number,
-      require: true,
+      required: true,
+      default: 6,
     },
     bedsTaken: {
       type: Number,
-      require: true,
+      required: true,
+      default: 0,
     },
   },
   {
@@ -24,26 +25,38 @@ const roomSchema = new Schema(
 const shelterSchema = new Schema({
   totalGuests: Number,
   currentGuests: Number,
-  rooms: {
-    room1: roomSchema,
-    room2: roomSchema,
-    room3: roomSchema,
-    room4: roomSchema,
-    room5: roomSchema,
-    room6: roomSchema,
-    room7: roomSchema,
-    room8: roomSchema,
-    room9: roomSchema,
-    room934: roomSchema,
-    room10: roomSchema,
-    room11: roomSchema,
-    room12: roomSchema,
-    room13: roomSchema,
-    room14: roomSchema,
-    room15: roomSchema,
-  },
+  rooms: [roomSchema],
 });
 
 const Shelter = model('Shelter', shelterSchema, 'shelterStats');
 
 export default Shelter;
+
+// const createShelter = async () => {
+//   const rooms = [];
+//   for (let i = 1; i <= 16; i++) {
+//     rooms.push({ roomNumber: i, totalBeds: 6, bedsTaken: 0 });
+//   }
+
+//   const shelter = new Shelter({
+//     totalGuests: 0,
+//     currentGuests: 0,
+//     rooms: rooms,
+//   });
+
+//   await shelter.save();
+//   console.log('Shelter created with 16 rooms');
+// };
+
+// // Main function to connect to MongoDB and create the shelter
+// const main = async () => {
+//   try {
+//     await createShelter();
+//   } catch (error) {
+//     console.error('Error connecting to MongoDB or creating shelter:', error);
+//   } finally {
+//     mongoose.connection.close();
+//   }
+// };
+
+// main();

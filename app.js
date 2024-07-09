@@ -7,17 +7,20 @@ import cookieParser from 'cookie-parser';
 import swaggerUi from 'swagger-ui-express';
 import HttpError from './helpers/HttpError.js';
 
-import statsRouter from './routes/statsRouter.js';
 import authRouter from './routes/authRouter.js';
+import handleSocketConnection from './routes/statsRouter.js';
 
 const swaggerDocument = JSON.parse(fs.readFileSync('./swagger.json', 'utf-8'));
 
 const app = express();
 const server = createServer(app);
+
 const io = new Server(server, {
   cors: {
-    origin: '*',
+    origin: 'http://localhost:5173',
+    methods: ['GET', 'POST'],
   },
+  path: '/socket.io',
 });
 
 app.use(
@@ -39,13 +42,9 @@ app.use(cookieParser());
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-app.use((req, res, next) => {
-  req.io = io;
-  next();
-});
+io.on('connection', handleSocketConnection);
 
 app.use('/api/auth', authRouter);
-app.use('/api', statsRouter(io));
 
 app.use((req, res, next) => {
   next(HttpError(404, 'Route not found'));

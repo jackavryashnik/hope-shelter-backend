@@ -4,17 +4,20 @@ import calculateCurrentGuests from '../helpers/calculateCurrentGuests.js';
 
 const getStats = async (req, res, next, io) => {
   const stats = await Shelter.findOne();
+
   res.json({
     status: 'success',
     data: stats,
   });
 
-  io.emit('bedsFetched', { message: 'All beds data fetched' });
+  io.on('connection', socket => {
+    const data = socket.on('clientEvent', data => data);
+    console.log(data.data);
+    socket.emit('bedsFetched', { message: 'beds' });
+  });
 };
 
-const updateBeds = async (req, res, next, io) => {
-  const { room, bedsTaken } = req.body;
-
+const updateBeds = async (room, bedsTaken) => {
   const stats = await Shelter.findOne();
 
   if (stats && stats.rooms[room]) {
@@ -29,12 +32,10 @@ const updateBeds = async (req, res, next, io) => {
 
     await stats.save();
 
-    res.json({
+    return json({
       status: 'success',
-      data: { message: 'Data updated successfully' },
+      data: stats,
     });
-
-    io.emit('bedsUpdated', { message: 'Beds data updated' });
   } else {
     res.status(404).json({
       status: 'error',
