@@ -4,7 +4,7 @@ import { server } from './app.js';
 import 'dotenv/config';
 
 const uri = process.env.DB_HOST;
-const port = process.env.PORT || 8000;
+const port = process.env.PORT || 3000;
 
 (async () => {
   try {
