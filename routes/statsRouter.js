@@ -5,11 +5,11 @@ const handleSocketConnection = async socket => {
 
   socket.emit('bedsFetched', stats);
 
-  socket.on('updateBedsTaken', async ({ roomId, bedsTaken, beds }) => {
-    if (roomId && bedsTaken) {
+  socket.on('updateRoom', async ({ roomId, bedsTaken, beds }) => {
+    if (roomId || bedsTaken || beds) {
       const result = await Shelter.updateOne(
         { _id: '668e446687a20aa914d196b6', 'rooms._id': roomId },
-        { $set: { 'rooms.$.bedsTaken': bedsTaken, 'rooms.$.beds': beds} }
+        { $set: { 'rooms.$.bedsTaken': bedsTaken, 'rooms.$.beds': beds } }
       );
 
       if (result.modifiedCount > 0) {
