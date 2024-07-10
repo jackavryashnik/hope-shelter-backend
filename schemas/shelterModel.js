@@ -15,6 +15,11 @@ const roomSchema = new Schema(
       required: true,
       default: 0,
     },
+    beds: {
+      type: Object,
+      required: true,
+      default: {},
+    },
   },
   {
     timestamps: false,
@@ -35,7 +40,7 @@ export default Shelter;
 // const createShelter = async () => {
 //   const rooms = [];
 //   for (let i = 1; i <= 16; i++) {
-//     rooms.push({ roomNumber: i, totalBeds: 6, bedsTaken: 0 });
+//     rooms.push({ roomNumber: i, totalBeds: 6, bedsTaken: 0, beds: {bed1: [false, false], bed2: [false, false], bed3: [false, false]} });
 //   }
 
 //   const shelter = new Shelter({
