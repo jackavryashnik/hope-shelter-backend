@@ -12,7 +12,7 @@ import authRouter from './routes/authRouter.js';
 import handleSocketConnection from './routes/statsRouter.js';
 
 const swaggerDocument = JSON.parse(fs.readFileSync('./swagger.json', 'utf-8'));
-const [API_URL] = process.env;
+const API_URL = process.env;
 
 const app = express();
 const server = createServer(app);
