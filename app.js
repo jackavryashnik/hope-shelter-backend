@@ -18,7 +18,7 @@ const server = createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: '*',
+    origin: ['http://localhost:5173', 'https://hope-shelter-room-check.vercel.app/'],
     methods: ['GET', 'POST'],
     credentials: true,
   },
@@ -34,7 +34,7 @@ app.use(
       'Content-Type',
       'Access-Control-Allow-Origin',
     ],
-    origin: '*',
+    origin: ['http://localhost:5173', 'https://hope-shelter-room-check.vercel.app/'],
     Headers: true,
     methods: ['GET', 'PUT', 'POST', 'DELETE', 'OPTIONS'],
   })
