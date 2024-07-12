@@ -18,7 +18,7 @@ const server = createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: process.env.API_URL,
+    origin: [process.env.API_URL, 'https://hope-shelter-api.onrender.com'],
     methods: ['GET', 'POST'],
   },
   path: '/socket.io',
