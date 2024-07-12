@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import fs from 'node:fs';
 import express from 'express';
 import cors from 'cors';
@@ -17,7 +18,7 @@ const server = createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: 'https://hope-shelter-room-check.vercel.app/',
+    origin: process.env.API_URL,
     methods: ['GET', 'POST'],
   },
   path: '/socket.io',
@@ -32,7 +33,7 @@ app.use(
       'Content-Type',
       'Access-Control-Allow-Origin',
     ],
-    origin: true,
+    origin: process.env.API_URL,
     Headers: true,
     methods: ['GET', 'PUT', 'POST', 'DELETE', 'OPTIONS'],
   })
