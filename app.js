@@ -12,13 +12,14 @@ import authRouter from './routes/authRouter.js';
 import handleSocketConnection from './routes/statsRouter.js';
 
 const swaggerDocument = JSON.parse(fs.readFileSync('./swagger.json', 'utf-8'));
+const [API_URL] = process.env;
 
 const app = express();
 const server = createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: ['http://localhost:5173', 'https://hope-shelter-room-check.vercel.app'],
+    origin: API_URL,
     methods: ['GET', 'POST'],
     credentials: true,
   },
@@ -34,7 +35,7 @@ app.use(
       'Content-Type',
       'Access-Control-Allow-Origin',
     ],
-    origin: ['http://localhost:5173', 'https://hope-shelter-room-check.vercel.app'],
+    origin: API_URL,
     Headers: true,
     methods: ['GET', 'PUT', 'POST', 'DELETE', 'OPTIONS'],
   })
