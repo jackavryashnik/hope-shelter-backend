@@ -30,6 +30,8 @@ export const getUsers = async (req, res) => {
 
 export const patchUser = async (req, res) => {
   const [bearer, token] = req.headers.authorization.split(' ');
+  const id = req.body.id;
+  const role = req.body.role;
 
   const decode = jwt.decode(token);
 
@@ -38,9 +40,7 @@ export const patchUser = async (req, res) => {
   }
 
   const isRoleValid =
-    req.body.role === 'user' ||
-    req.body.role === 'admin' ||
-    req.body.role === 'superadmin';
+    role === 'user' || role === 'admin' || role === 'superadmin';
 
   if (!isRoleValid) {
     throw HttpError(403, 'Role invalid');
@@ -57,8 +57,8 @@ export const patchUser = async (req, res) => {
   }
 
   const updatedUser = await UserModel.findOneAndUpdate(
-    { _id: req.body.id },
-    { role: req.body.role }
+    { _id: id },
+    { role: role }
   );
 
   res.status(201).send({ updatedUser });
