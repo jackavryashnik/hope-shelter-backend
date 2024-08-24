@@ -38,7 +38,7 @@ app.use(
     ],
     origin: API_URL,
     Headers: true,
-    methods: ['GET', 'PUT', 'POST', 'DELETE', 'OPTIONS'],
+    methods: ['GET', 'PUT', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
   })
 );
 app.use(express.json());
