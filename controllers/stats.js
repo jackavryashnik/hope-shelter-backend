@@ -12,7 +12,6 @@ const getStats = async (req, res, next, io) => {
 
   io.on('connection', socket => {
     const data = socket.on('clientEvent', data => data);
-    console.log(data.data);
     socket.emit('bedsFetched', { message: 'beds' });
   });
 };
