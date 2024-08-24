@@ -9,6 +9,7 @@ import swaggerUi from 'swagger-ui-express';
 import HttpError from './helpers/HttpError.js';
 
 import authRouter from './routes/authRouter.js';
+import adminRouter from './routes/adminRouter.js';
 import handleSocketConnection from './routes/statsRouter.js';
 
 const swaggerDocument = JSON.parse(fs.readFileSync('./swagger.json', 'utf-8'));
@@ -48,6 +49,8 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 io.on('connection', handleSocketConnection);
 
 app.use('/api/auth', authRouter);
+
+app.use('/api/admin', adminRouter);
 
 app.use((req, res, next) => {
   next(HttpError(404, 'Route not found'));
